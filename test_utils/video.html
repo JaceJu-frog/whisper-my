@@ -1,0 +1,61 @@
+<!-- 尝试引用单文件版本的video.js并打开视频。 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>视频收纳与笔记</title>
+<script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+
+  <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
+  <script src="https://unpkg.com/vue@latest"></script>
+  <style>
+    .vjs-time-tooltip {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+  </style>
+</head>
+<body>
+    <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+    data-setup='{}'>
+    <source src="../散华.mp4" type="video/mp4">
+  </video>
+  <!-- <script>
+    var player = videojs('my-video');
+    player.ready(function() {
+        var progressControl = this.controlBar.progressControl;
+        var toolTip = document.createElement('div');
+        toolTip.className = 'vjs-time-tooltip';
+        toolTip.style.position = 'absolute';
+        toolTip.style.display = 'none';
+        progressControl.el().appendChild(toolTip);
+
+        progressControl.on('mousemove', function(event) {
+            var duration = player.duration();
+            var mouseTime = (event.offsetX / progressControl.width()) * duration;
+            var currentTime = player.currentTime();
+            
+            toolTip.style.display = 'block';
+            toolTip.style.left = event.offsetX + 'px';
+            toolTip.innerHTML = 'Current: ' + formatTime(currentTime) + '<br>Hover: ' + formatTime(mouseTime);
+        });
+
+        progressControl.on('mouseout', function() {
+            toolTip.style.display = 'none';
+        });
+    });
+
+    function formatTime(seconds) {
+        var minutes = Math.floor(seconds / 60);
+        var seconds = Math.floor(seconds % 60);
+        return minutes + ':' + (seconds < 10 ? '0' + seconds : seconds);
+    }
+
+  </script> -->
+</body>
+</html>

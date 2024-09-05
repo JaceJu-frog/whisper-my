@@ -1,0 +1,138 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+.resizable-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.video-part {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+/* object-fit: cover; This will make sure the video covers the entire container */
+
+.video-js {
+  flex: 1;
+  width: 100%;
+  height: auto; /* 保持视频的宽高比 */
+}
+
+/*  */
+.resizer {
+  width: 5px;
+  cursor: col-resize;
+  background-color: #ccc;
+}
+
+
+/* 标签页，切换字幕与笔记 */
+.tabs {
+  display: flex;
+  background-color: #f1f1f1;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #f1f1f1;
+}
+
+.tabs button.active {
+  background-color: #ddd;
+}
+
+/* 字幕的css样式 */
+.sider{
+  width: 100%;
+  height: 50%;
+}
+
+.subtitles, .notes {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.subtitle-list {
+  list-style: none;
+  padding: 0;
+}
+
+.subtitle-list li {
+  margin-bottom: 10px;
+}
+
+.subtitle-list li.active {
+  background-color: #f0f0f0;
+}
+
+.edit-textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fine-tune-feedback {
+  display: block;
+  margin-top: 5px;
+  color: #888;
+}
+
+/* 删除按钮的样式 */
+.deleteSubtitle {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-size: 16px;
+}
+
+.deleteSubtitle::before {
+  content: "×";
+}
+
+
+.toggle-exclude {
+  background-color: transparent;
+  border: none;
+  color: #ccc;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.toggle-exclude::before {
+  content: "×";
+}
+
+/* 勾选按钮的样式 */
+/* 当勾选时改变样式 */
+.toggle-exclude.selected::before {
+  color: red;
+  content: "✓";
+}
+
+/* 勾选时覆盖灰色层 */
+.excluded {
+  background-color: rgba(128, 128, 128, 0.7); /* 灰色半透明 */
+}

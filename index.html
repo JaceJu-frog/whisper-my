@@ -1,0 +1,74 @@
+左侧标签滑动，右侧点击分类，分类可以重命名。
+<div id="app">
+    <div class="resizable-container">
+      <div class="video-part" ref="resizablePart1">
+        <input type="file" @change="handleFileUpload">
+        <video 
+          v-if="videoSrc" 
+          :src="videoSrc" 
+          controls 
+          @timeupdate="updateCurrentTime" 
+          ref="videoPlayer"
+        >
+          <track 
+            v-if="showSubtitles && vttBlobUrl" 
+            kind="subtitles" 
+            :src="vttBlobUrl" 
+            srclang="en" 
+            label="English" 
+            default
+          >
+        </video>
+        <br>
+        <button @click="toggleSubtitles">{{ showSubtitles ? '隐藏字幕' : '显示字幕' }}</button>
+        <button @click="toggleFineTune">{{ showFineTune ? '关闭微调' : '字幕微调' }}</button>
+        <button @click="downloadSubtitles">下载字幕</button>
+      </div>
+      <div class="resizer" @mousedown="startResize"></div>
+      <div class="subtitle_part" ref="resizablePart2">
+        <div class="tabs">
+          <button :class="{ active: activeTab === 'subtitles' }" @click="switchTab('subtitles')">字幕</button>
+          <button :class="{ active: activeTab === 'notes' }" @click="switchTab('notes')">笔记</button>
+        </div>
+        <div v-if="activeTab === 'subtitles'" class="subtitles">
+          <input type="file" @change="handleSubtitleUpload" accept=".srt">
+          <ul v-if="subtitles.length" class="subtitle-list" ref="subtitleList">
+            <li 
+              v-for="(subtitle, index) in subtitles" 
+              :key="index" 
+              :class="{ active: currentTime >= subtitle.startTime && currentTime <= subtitle.endTime }"
+            >
+              <strong @click="jumpToTime(subtitle.startTime)">
+                <span @dblclick="startFineTune(index, 'start')">
+                  {{ new Date(subtitle.startTime * 1000).toISOString().substr(11, 12) }}
+                </span>
+                --> 
+                <span @dblclick="startFineTune(index, 'end')">
+                  {{ new Date(subtitle.endTime * 1000).toISOString().substr(11, 12) }}
+                </span>
+              </strong>:
+              <span v-if="editingIndex !== index" @dblclick="editSubtitle(index)">
+                {{ subtitle.text || 'Double-click to edit' }}
+              </span>
+              <textarea 
+                v-else 
+                v-model="editedText" 
+                @keyup.enter="saveSubtitle(index)" 
+                @blur="saveSubtitle(index)" 
+                @keyup.esc="cancelEdit"
+                class="edit-textarea"
+              ></textarea>
+              <button @click="splitSubtitle(index)">分割字幕</button>
+              <button @click="deleteSubtitle(index)">删除字幕</button>
+              <span v-if="fineTuneIndex === index" class="fine-tune-feedback">
+                微调中: {{ new Date(subtitle.startTime * 1000).toISOString().substr(11, 8) }} --> {{ new Date(subtitle.endTime * 1000).toISOString().substr(11, 8) }}
+              </span>
+            </li>
+          </ul>
+        </div>
+        <div v-if="activeTab === 'notes'" class="notes">
+          <note-component :videoCurrentTime="currentTime" :jumpToTime="jumpToTime"></note-component>
+        </div>
+      </div>
+    </div>
+  </div>
